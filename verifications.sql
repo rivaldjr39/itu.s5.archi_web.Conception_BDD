@@ -33,3 +33,17 @@ LEFT JOIN plat p
 ON cp.id_plat = p.id
 GROUP BY s.id
 ORDER BY chiffre_affaires DESC;
+
+--iste des commandes non soldées avec le montant dû, le montant payé et le reste à payer.
+SELECT c.id AS commande_id, 
+       SUM(p.prix * cp.quantite) AS montant_du, 
+       COALESCE(SUM(paiement.montant), 0) AS montant_paye, 
+       SUM(p.prix * cp.quantite) - COALESCE(SUM(paiement.montant), 0) AS reste_a_payer
+FROM commandes c
+LEFT JOIN commande_plat cp ON c.id = cp.id_commande
+LEFT JOIN plat p ON cp.id_plat = p.id
+LEFT JOIN paiement_commande pc ON c.id = pc.id_commande
+LEFT JOIN paiements paiement ON pc.id_paiement = paiement.id
+GROUP BY c.id
+HAVING SUM(p.prix * cp.quantite) - COALESCE(SUM(paiement.montant), 0) > 0
+ORDER BY c.id;
