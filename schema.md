@@ -1,2 +1,3 @@
 # Schema 
-- carte (**id** , plat , categorie , prix) (nouveau)
+- plat (**id** , nom , prix , **# id_categories**) (modifier)
+- categories (**id** , nom ) (nouveau)
