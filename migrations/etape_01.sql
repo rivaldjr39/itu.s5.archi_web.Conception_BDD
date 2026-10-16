@@ -1,12 +1,11 @@
-CREATE TABLE carte (
+CREATE TABLE plat (
     id SERIAL PRIMARY KEY,
-    plat VARCHAR(100) NOT NULL,
+    nom VARCHAR(100) NOT NULL,
     categorie VARCHAR(100) NOT NULL,
     prix INT NOT NULL
 );
 
-
-INSERT INTO carte (plat , categorie, prix) VALUES
+INSERT INTO plat (nom , categorie, prix) VALUES
 ('Romazava', 'Plat Malagasy ', 7000),
 ('Ravitoto sy heanakisoa', 'Plat Malagasy' , 8000),
 ('Akoho sy voanio', 'Plat Malagasy ', 8500),
