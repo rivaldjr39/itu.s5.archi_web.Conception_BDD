@@ -35,15 +35,31 @@ GROUP BY s.id
 ORDER BY chiffre_affaires DESC;
 
 --iste des commandes non soldées avec le montant dû, le montant payé et le reste à payer.
-SELECT c.id AS commande_id, 
-       SUM(p.prix * cp.quantite) AS montant_du, 
-       COALESCE(SUM(paiement.montant), 0) AS montant_paye, 
-       SUM(p.prix * cp.quantite) - COALESCE(SUM(paiement.montant), 0) AS reste_a_payer
+SELECT
+    c.id AS id_commande,
+    COALESCE(total_commande.montant_total, 0) AS montant_total,
+    COALESCE(total_paiement.montant_paye, 0) AS montant_paye,
+    COALESCE(total_commande.montant_total, 0)
+        - COALESCE(total_paiement.montant_paye, 0) AS reste_a_payer
 FROM commandes c
-LEFT JOIN commande_plat cp ON c.id = cp.id_commande
-LEFT JOIN plat p ON cp.id_plat = p.id
-LEFT JOIN paiement_commande pc ON c.id = pc.id_commande
-LEFT JOIN paiements paiement ON pc.id_paiement = paiement.id
-GROUP BY c.id
-HAVING SUM(p.prix * cp.quantite) - COALESCE(SUM(paiement.montant), 0) > 0
+
+LEFT JOIN (
+    SELECT cp.id_commande,SUM(cp.quantite * p.prix) AS montant_total
+    FROM commande_plat cp
+    JOIN plat p ON p.id = cp.id_plat
+    GROUP BY cp.id_commande
+) total_commande
+    ON total_commande.id_commande = c.id
+
+LEFT JOIN (
+    SELECT id_commande,SUM(montant) AS montant_paye
+    FROM paiements
+    GROUP BY id_commande
+) total_paiement
+    ON total_paiement.id_commande = c.id
+
+WHERE
+    COALESCE(total_paiement.montant_paye, 0) < COALESCE(total_commande.montant_total, 0)
+
 ORDER BY c.id;
+

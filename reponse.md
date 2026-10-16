@@ -19,3 +19,10 @@
 ## etape 5: 
 - le nom table pose probleme car "table" est une requete en sql 
   
+## etape 6:
+- une colognz montant_paye dans la table commandes ne suffit pas car on ne paus pas distinguer le type de payement comme le payement par mobile money 
+- le mode de paiement : contrainte CHECK : en terme de performance , le CHECK est plus perfomant car si on fait une table de reference , la requete est plus long 
+
+## etape 8:
+
+

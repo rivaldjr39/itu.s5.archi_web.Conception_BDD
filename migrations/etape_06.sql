@@ -1,34 +1,19 @@
 CREATE TABLE paiements (
     id SERIAL PRIMARY KEY,
+    id_commande INT NOT NULL REFERENCES commandes(id),
     date_paiement TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    montant INT NOT NULL
+    montant INT NOT NULL CHECK (montant > 0),
+    mode_paiement VARCHAR(30) NOT NULL
+        CHECK (mode_paiement IN (
+            'Especes',
+            'MVola',
+            'Orange Money',
+            'Airtel Money'
+        )),
+    reference_transaction VARCHAR(100)
 );
 
-CREATE TABLE type_paiements (
-    id SERIAL PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE paiement_commande (
-    id SERIAL PRIMARY KEY,
-    id_paiement INT REFERENCES paiements(id),
-    id_commande INT REFERENCES commandes(id),
-    id_type_paiement INT REFERENCES type_paiements(id)
-);
-
-INSERT INTO type_paiements (nom) VALUES
-('Espèces'),
-('Mvola'),
-('Orange Money'),
-('Airtel Money');
-
-INSERT INTO paiements (date_paiement, montant) VALUES
-('2026-06-01 12:30:00', 10000),
-('2026-06-02 19:00:00', 5000),
-('2026-06-03 14:45:00', 6000);
- 
-INSERT INTO paiement_commande (id_paiement, id_commande, id_type_paiement) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 2, 3);
-
+INSERT INTO paiements (id_commande,montant,mode_paiement,reference_transaction) VALUES
+(1, 10000, 'Especes', NULL),
+(1, 5000, 'MVola', 'MVOLA20261016001'),
+(2, 6000, 'Orange Money', 'OM20261016002');
