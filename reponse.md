@@ -24,5 +24,11 @@
 - le mode de paiement : contrainte CHECK : en terme de performance , le CHECK est plus perfomant car si on fait une table de reference , la requete est plus long 
 
 ## etape 8:
+la colonne ingredients VARCHAR(500) n'est pas conseille car on ne peux pas connaitre les stock, les unite et des quelles ingredients composent une plat
+
+## etape 9:
+- On ne cree pas une table menu separee car le menu se commande comme un plat 
+- c'est le contrinte CHECK qu'on definis sur la table menu_plat
+
 
 

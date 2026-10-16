@@ -63,3 +63,36 @@ WHERE
 
 ORDER BY c.id;
 
+
+--consommation théorique de chaque ingrédient pour la journée du 12 octobre.
+SELECT
+    i.nom AS ingredient,
+    u.libelle AS unite,
+    SUM(ip.quantite * cp.quantite) AS consommation_theorique
+FROM commande_plat cp
+JOIN plat p ON p.id = cp.id_plat
+JOIN ingredients_plat ip ON ip.id_plat = p.id
+JOIN ingredients i ON i.id = ip.id_ingredient
+JOIN unite_ingredient u ON u.id = 1
+JOIN commandes c ON c.id = cp.id_commande
+WHERE c.date_commande >= TIMESTAMP '2026-10-12 00:00:00'
+  AND c.date_commande < TIMESTAMP '2026-10-13 00:00:00'
+  AND ip.date_utilisation = DATE '2026-10-12'
+GROUP BY i.id, i.nom, u.libelle
+ORDER BY i.nom;
+
+
+--Vérification : pour chaque menu, son prix, la somme des prix à la carte et l'économie réalisée par le client.
+SELECT
+    m.nom AS menu,
+    m_prix.prix AS prix_menu,
+    SUM(p_prix.prix * mp.quantite) AS prix_a_la_carte,
+    (SUM(p_prix.prix * mp.quantite) - m_prix.prix) AS economie_realisee
+FROM plat m
+JOIN menu_plat mp ON mp.id_menu = m.id
+JOIN plat p ON p.id = mp.id_plat
+JOIN prix m_prix ON m_prix.id_plat = m.id
+JOIN prix p_prix ON p_prix.id_plat = p.id
+WHERE m.type_plat = 'menu'
+GROUP BY m.id, m.nom, m_prix.prix
+ORDER BY m.nom; 

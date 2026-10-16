@@ -1,5 +1,5 @@
 # Schema 
-- plat (**id** , nom , prix , #id_categories) (modifier)
+- plat (**id** , nom , prix , #id_categories, type_plat) (modifier)
 - categories (**id** , nom ) (nouveau)
 - commandes(**id**, date_commande, #id_clent?, #id_serveur, #id_table, montant_total)(modifier)
 - commande_plat(**id**,**# id_commande**, **# id_plat** quantite) (nouveau)
@@ -7,4 +7,9 @@
 - serveurs(**id**, nom, prenom, email, telephone)(nouveau)
 - tables ( **id**, numero, capacite )(nouveau)
 - paiements(**id**,#id_commande, date_paiement, montant , mode_paiement, reference_transaction)(nouveau)
-- prix(**id**, #id_plat, prix, date_debut)
+- prix(**id**, #id_plat, prix, date_debut)(nouveau)
+- ingredients (**id**, nom)(nouveau)
+- unite_ingredient(**id**, libelle)(nouveau)
+- stock_ingredient(**id**, #id_ingredient, quantite, #id_unite, date_peremption)(nouveau)
+- ingredients_plat(**id**, #id_ingredient,#id_plat, quantite, date_utilisation)
+- menu_plat(**id**, #id_menu, #id_plat, quantite) (nouveau)
