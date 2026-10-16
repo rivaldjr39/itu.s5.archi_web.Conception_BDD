@@ -11,3 +11,11 @@
 
 ## etape 3:
 - on place la quantite dans la table de liaison (commande_plat)
+
+## etape 4: 
+- Mon cle etrangere n'est pas **NOT NULL**
+- on fait la jointure **LEFT JOIN**
+  
+## etape 5: 
+- le nom table pose probleme car "table" est une requete en sql 
+  
